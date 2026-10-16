@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Turbo Clash Online</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-icon">🏎️</span><div><strong>TURBO CLASH</strong><small>ONLINE RACING</small></div></div>
+      <div class="online-pill"><span></span> أونلاين</div>
+    </header>
+
+    <section id="lobby" class="panel lobby">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">تحدّى أصحابك</p>
+          <h1>الطريق لك.<br><span>والفوز للأسرع!</span></h1>
+          <p class="muted">سباق ثلاثي الأبعاد • 6 ممرات • اختر عدد اللاعبين في كل غرفة</p>
+        </div>
+        <div class="hero-car">🏎️</div>
+      </div>
+      <label for="playerName">اسم السائق</label>
+      <input id="playerName" maxlength="16" placeholder="اكتب اسمك" value="سائق جديد">
+      <label for="carModel">اختر سيارتك</label>
+      <select id="carModel" class="capacity-select">
+        <option value="supra">Toyota GR Supra MK5 — كوبيه رياضية</option>
+        <option value="gtr">Nissan GT-R R35 — رياضية يابانية</option>
+        <option value="porsche911">Porsche 911 GT3 — أداء الحلبات</option>
+        <option value="huracan">Lamborghini Huracán — سوبركار</option>
+        <option value="mustang">Ford Mustang GT — عضلات أمريكية</option>
+        <option value="bmwm4">BMW M4 Competition — كوبيه رياضية</option>
+      </select>
+      <p id="carDescription" class="capacity-help">اختر السيارة المفضلة؛ سيقودها الآخرون بسياراتهم المختارة أيضًا.</p>
+      <label for="maxPlayers">الحد الأقصى للاعبين في غرفتك</label>
+      <select id="maxPlayers" class="capacity-select" disabled>
+        <option value="">جاري قراءة قدرة الخادم...</option>
+      </select>
+      <p id="capacityHelp" class="capacity-help">سيظهر الحد الأقصى المتاح بعد الاتصال بالخادم.</p>
+      <div class="lobby-actions">
+        <button id="createBtn" class="primary">＋ إنشاء غرفة</button>
+        <div class="join-row">
+          <input id="roomCode" maxlength="5" placeholder="كود الغرفة" autocomplete="off">
+          <button id="joinBtn" class="secondary">دخول الغرفة</button>
+        </div>
+      </div>
+      <p id="lobbyError" class="error" aria-live="polite"></p>
+      <div class="feature-row"><span>⚡ تعزيز سرعة</span><span>🛣️ طرق متفرعة</span><span>🏆 ترتيب مباشر</span></div>
+    </section>
+
+    <section id="roomPanel" class="panel room-panel hidden">
+      <div class="room-heading">
+        <div><p class="eyebrow">غرفة خاصة</p><h2>استعد للانطلاق</h2></div>
+        <button id="leaveBtn" class="ghost">مغادرة ←</button>
+      </div>
+      <div class="room-code-box"><div><small>كود الغرفة — شاركه مع أصدقائك</small><strong id="roomCodeDisplay">-----</strong></div><button id="copyBtn" class="secondary">نسخ الكود</button></div>
+      <div class="players-heading"><strong>اللاعبون</strong><span id="playerCount">0 / —</span></div>
+      <div id="playerList" class="player-list"></div>
+      <p id="roomError" class="error" aria-live="polite"></p>
+      <button id="readyBtn" class="secondary full">أنا جاهز ✓</button>
+      <button id="startBtn" class="primary full hidden">ابدأ السباق 🚦</button>
+      <p id="roomHint" class="muted center">شارك الكود مع أصدقائك ليدخلوا الغرفة.</p>
+    </section>
+
+    <section id="racePanel" class="race-panel hidden">
+      <div class="race-hud">
+        <div class="hud-chip"><small>السرعة</small><strong><span id="speedValue">0</span><small> كم/س</small></strong></div>
+        <div class="hud-chip"><small>التقدم</small><strong id="progressValue">0%</strong></div>
+        <div class="hud-chip"><small>المركز</small><strong id="positionValue">—</strong></div>
+        <button id="exitRaceBtn" class="hud-exit">خروج</button>
+      </div>
+      <div id="gameViewport">
+        <canvas id="gameCanvas"></canvas>
+        <div id="countdown" class="countdown hidden">3</div>
+        <div id="raceToast" class="race-toast hidden"></div>
+        <div class="race-bottom">
+          <div class="race-tip">← → أو A/D توجيه • ↑ أو W تسارع • ↓ أو S فرامل • SPACE تعزيز • SHIFT/X درفت</div>
+          <div id="leaderboard" class="leaderboard"></div>
+        </div>
+      </div>
+      <div class="mobile-controls">
+        <div class="steer-controls"><button id="leftBtn">◀</button><button id="rightBtn">▶</button></div>
+        <div class="drive-controls"><button id="brakeBtn">فرامل</button><button id="driftBtn" class="drift-btn">درفت</button><button id="boostBtn" class="boost-btn">⚡ تعزيز</button><button id="gasBtn" class="gas-btn">تسارع</button></div>
+      </div>
+    </section>
+    <footer>Turbo Clash Online <span>•</span> نسخة تجريبية قابلة للتطوير</footer>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
